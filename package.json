@@ -5,5 +5,11 @@
     "frontend"
   ],
   "scripts": {
+    "dev": "concurrently \"yarn workspace backend run build:watch\" \"yarn workspace frontend run dev\"",
+    "build": "yarn workspaces run build",
+    "lint": "yarn workspaces run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
