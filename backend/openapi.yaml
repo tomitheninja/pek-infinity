@@ -1,0 +1,46 @@
+openapi: 3.0.0
+paths:
+  /api/v4/ping:
+    get:
+      operationId: PingController_send
+      summary: ""
+      description: >-
+        # Health check endpoint<br>
+
+
+        This endpoint is a simple health check API designed to confirm that the
+        server is operational.
+
+
+        When accessed, it returns a straightforward response indicating that the
+        service is up and running.
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ping"
+info:
+  title: PÉK API
+  description: Profiles and Groups
+  version: v4
+  contact:
+    name: kir-dev
+    url: https://kir-dev.hu
+    email: hello@kir-dev.hu
+tags: []
+servers: []
+components:
+  schemas:
+    Ping:
+      type: object
+      properties:
+        ping:
+          type: string
+      required:
+        - ping
+externalDocs:
+  description: Source Code (GitHub)
+  url: https://github.com/kir-dev/pek-infinity

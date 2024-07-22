@@ -5,11 +5,15 @@
     "frontend"
   ],
   "scripts": {
-    "dev": "concurrently \"yarn workspace backend run build:watch\" \"yarn workspace frontend run dev\"",
+    "dev": "concurrently \"yarn workspace backend run build:watch\" \"yarn workspace frontend run dev\" \"yarn run watch:openapi\"",
     "build": "yarn workspaces run build",
-    "lint": "yarn workspaces run lint"
+    "lint": "yarn workspaces run lint",
+    "generate": "npx @openapitools/openapi-generator-cli generate -i ./backend/openapi.yaml -g typescript-axios -o ./pek-client",
+    "watch:openapi": "nodemon --watch backend/openapi.yaml --exec \"yarn generate\""
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@openapitools/openapi-generator-cli": "^2.13.4",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4"
   }
 }
