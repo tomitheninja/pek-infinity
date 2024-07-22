@@ -1,10 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
-
-import { AppModule } from './app.module';
+import { type NestExpressApplication } from '@nestjs/platform-express';
 import { VersioningType } from '@nestjs/common';
+import { AppModule } from './app.module';
 
-export async function bootstrap() {
+export async function bootstrap(): Promise<{ app: NestExpressApplication }> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app

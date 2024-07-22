@@ -1,6 +1,6 @@
 import { bootstrap } from './app';
 
-async function devMain() {
+async function devMain(): Promise<void> {
   const { app } = await bootstrap();
 
   await app.listen(process.env.PORT ?? 3300);
