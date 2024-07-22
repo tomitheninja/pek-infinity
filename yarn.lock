@@ -2007,8 +2007,15 @@ babel-preset-jest@^29.6.3:
     babel-plugin-jest-hoist "^29.6.3"
     babel-preset-current-node-syntax "^1.0.0"
 
-"backend@file:backend/dist":
-  version "0.0.0"
+"backend@file:backend":
+  version "0.0.1"
+  dependencies:
+    "@nestjs/common" "^10.0.0"
+    "@nestjs/core" "^10.0.0"
+    "@nestjs/platform-express" "^10.0.0"
+    reflect-metadata "^0.2.0"
+    rxjs "^7.8.1"
+    yaml "^2.4.5"
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -5455,6 +5462,9 @@ path-type@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
+
+"pek-client@file:pek-client":
+  version "0.0.0"
 
 picocolors@^1.0.0, picocolors@^1.0.1:
   version "1.0.1"

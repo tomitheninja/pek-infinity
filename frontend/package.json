@@ -10,7 +10,7 @@
   },
   "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
-    "backend": "file:../backend/dist",
+    "backend": "file:../backend",
     "next": "14.2.5",
     "pek-client": "file:../pek-client",
     "react": "^18",
