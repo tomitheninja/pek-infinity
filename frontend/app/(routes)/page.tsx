@@ -1,4 +1,8 @@
+import Link from 'next/link';
+
+import { ClientSideProfile } from '@/components/client-side-profile';
 import { Navbar } from '@/components/navbar';
+import { ServerSideProfile } from '@/components/server-side-profile';
 import { PekApi } from '@/pek-api';
 
 export const dynamic = 'force-dynamic';
@@ -43,6 +47,9 @@ export default async function Home() {
             <p className='m-0 max-w-[30ch] text-sm opacity-50'>Egy random személy profilja</p>
           </a>
         </div>
+        <Link href={`${process.env.BACKEND_URL ?? ''}/api/v4/auth/login`}>Login</Link>
+        <ServerSideProfile />
+        <ClientSideProfile />
       </main>
     </>
   );

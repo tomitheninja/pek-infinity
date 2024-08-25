@@ -21,7 +21,8 @@ export async function bootstrap(): Promise<{
 
   app
     .setGlobalPrefix('api')
-    .enableVersioning({ type: VersioningType.URI, defaultVersion: '4' });
+    .enableVersioning({ type: VersioningType.URI, defaultVersion: '4' })
+    .enableCors();
 
   const config = new DocumentBuilder()
     .setVersion('v4')
