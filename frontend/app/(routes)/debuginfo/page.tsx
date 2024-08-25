@@ -5,7 +5,7 @@ import { getBasePath } from '@/pek-api';
 export default function Page() {
   const info = {
     NODE_ENV: process.env.NODE_ENV,
-    NERCEL_ENV: process.env.VERCEL_ENV,
+    VERCEL_ENV: process.env.VERCEL_ENV,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     'basePath()': getBasePath(),
   };
