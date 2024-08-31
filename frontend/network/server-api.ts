@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { cookies } from 'next/headers';
 
-import { AuthApi } from '@/pek';
+import { DefaultApi } from '@/pek';
+import { getBasePath } from '@/pek-api';
 
 const serverAxios = axios.create();
 serverAxios.interceptors.request.use((config) => {
@@ -12,4 +13,4 @@ serverAxios.interceptors.request.use((config) => {
   return config;
 });
 
-export const serverUserApi = new AuthApi(undefined, 'http://localhost:3001', serverAxios);
+export const serverUserApi = new DefaultApi(undefined, getBasePath(), serverAxios);

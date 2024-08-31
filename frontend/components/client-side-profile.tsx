@@ -9,9 +9,12 @@ export function ClientSideProfile() {
   const [user, setUser] = useState<UserDto>();
 
   useEffect(() => {
-    clientUserApi.authControllerMe().then((response) => {
-      setUser(response.data);
-    });
+    clientUserApi
+      .authControllerMe()
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch(() => {});
   }, []);
 
   if (!user) {

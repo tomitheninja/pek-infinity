@@ -1,4 +1,4 @@
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { Logger, VersioningType } from '@nestjs/common';
@@ -43,6 +43,14 @@ export async function bootstrap(): Promise<{
 export function writeDocument(document: OpenAPIObject): void {
   const openApiLogger = new Logger('OpenApiGenerator');
   const PATH = join(__dirname, '..', 'openapi.yaml');
+
+  const newDocument = yaml.stringify(document);
+  const currentDocument = readFileSync(PATH, { encoding: 'utf-8', flag: 'r' });
+
+  if (newDocument === currentDocument) {
+    openApiLogger.log('No changes in openapi.yaml');
+    return;
+  }
 
   openApiLogger.log('Writing openapi.yaml');
   writeFileSync(PATH, yaml.stringify(document), {

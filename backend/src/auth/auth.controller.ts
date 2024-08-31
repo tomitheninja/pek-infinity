@@ -1,7 +1,7 @@
 import { CurrentUser } from '@kir-dev/passport-authsch';
 import { Controller, Get, Redirect, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 import { FRONTEND_URL } from '@/config/environment.config';
 
@@ -9,7 +9,6 @@ import { AuthService } from './auth.service';
 import { UserDto } from './entities/user.entity';
 
 @Controller('auth')
-@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

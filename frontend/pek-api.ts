@@ -8,10 +8,14 @@ export function getBasePath(): string {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- if VERCEL_ENV is preview, VERCEL_URL is set
     return `https://${process.env.VERCEL_URL!}`;
   }
-  return 'http://localhost:3000';
+  throw new Error('NEXT_PUBLIC_API_URL is not set');
 }
 
 export class PekApi {
+  static get loginPath() {
+    return `${getBasePath()}/api/v4/auth/login`;
+  }
+
   private get api(): DefaultApi {
     return new DefaultApi(new Configuration({ basePath: getBasePath() }));
   }
