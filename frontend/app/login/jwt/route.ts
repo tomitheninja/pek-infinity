@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
-export function middleware(req: NextRequest): NextResponse {
+export function GET(req: NextRequest): NextResponse {
   const oAuthToken = req.nextUrl.searchParams.get('jwt');
   if (oAuthToken) {
     const response = NextResponse.redirect(new URL('/', req.url));

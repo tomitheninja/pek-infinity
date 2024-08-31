@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { cookies } from 'next/headers';
 
-import { DefaultApi } from '@/pek';
-import { getBasePath } from '@/pek-api';
+import { getBackend } from '@/app/actions';
 
-const serverAxios = axios.create();
+import { AbstractPekApi } from './abstract-api';
+
+export const serverAxios = axios.create();
 serverAxios.interceptors.request.use((config) => {
   const jwt = cookies().get('jwt');
   if (jwt) {
@@ -13,4 +14,13 @@ serverAxios.interceptors.request.use((config) => {
   return config;
 });
 
-export const serverUserApi = new DefaultApi(undefined, getBasePath(), serverAxios);
+export class ServerPekApi extends AbstractPekApi {
+  constructor(basePath: string) {
+    super(basePath, serverAxios);
+  }
+
+  static async getDefault(): Promise<ServerPekApi> {
+    const basePath = await getBackend({ preferredNetwork: 'private' });
+    return new ServerPekApi(basePath);
+  }
+}

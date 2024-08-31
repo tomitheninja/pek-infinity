@@ -1,10 +1,10 @@
+'use client';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-import { DefaultApi } from '@/pek';
-import { getBasePath } from '@/pek-api';
+import { AbstractPekApi } from './abstract-api';
 
-const clientAxios = axios.create();
+export const clientAxios = axios.create();
 clientAxios.interceptors.request.use((config) => {
   const jwt = Cookies.get('jwt');
   if (jwt) {
@@ -13,4 +13,8 @@ clientAxios.interceptors.request.use((config) => {
   return config;
 });
 
-export const clientUserApi = new DefaultApi(undefined, getBasePath(), clientAxios);
+export class ClientPekApi extends AbstractPekApi {
+  constructor(basePath: string) {
+    super(basePath, clientAxios);
+  }
+}

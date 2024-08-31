@@ -3,7 +3,7 @@ import { Controller, Get, Redirect, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 
-import { FRONTEND_URL } from '@/config/environment.config';
+import { FRONTEND_CALLBACK } from '@/config/environment.config';
 
 import { AuthService } from './auth.service';
 import { UserDto } from './entities/user.entity';
@@ -32,7 +32,7 @@ export class AuthController {
   oauthRedirect(@CurrentUser() user: UserDto) {
     const jwt = this.authService.login(user);
     return {
-      url: `${FRONTEND_URL}?jwt=${jwt}`,
+      url: `${FRONTEND_CALLBACK}?jwt=${jwt}`,
     };
   }
 

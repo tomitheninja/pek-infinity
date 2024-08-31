@@ -1,21 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import { clientUserApi } from '@/network/client-api';
+import { ClientApiContext } from '@/app/providers';
 import { type UserDto } from '@/pek';
 
 export function ClientSideProfile() {
-  const [user, setUser] = useState<UserDto>();
+  const pek = useContext(ClientApiContext);
+  const [user, setUser] = useState<UserDto | null>(null);
 
   useEffect(() => {
-    clientUserApi
-      .authControllerMe()
-      .then((response) => {
-        setUser(response.data);
-      })
+    if (!pek) return;
+    pek
+      .me()
+      .then(setUser)
       .catch(() => {});
-  }, []);
+  }, [pek]);
 
   if (!user) {
     return null;

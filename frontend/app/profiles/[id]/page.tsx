@@ -1,7 +1,5 @@
 import { Navbar } from '@/components/navbar';
 
-export const dynamic = 'force-dynamic';
-
 export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
