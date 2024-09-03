@@ -1,13 +1,20 @@
 import React from 'react';
 
-import { getBasePath } from '@/pek-api';
+import { getBackend } from '@/app/actions';
 
-export default function Page() {
+import { PekClientDebug } from './debug-client';
+
+export default async function Page() {
+  'use server';
+  const publicApi = await getBackend({ preferredNetwork: 'public' });
+  const privateApi = await getBackend({ preferredNetwork: 'private' });
   const info = {
     NODE_ENV: process.env.NODE_ENV,
     VERCEL_ENV: process.env.VERCEL_ENV,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    'basePath()': getBasePath(),
+    api: publicApi,
+    privateApi: publicApi === privateApi ? 'same' : 'different',
+    'window.pekApi': <PekClientDebug />,
   };
   return (
     <table className='text-center min-w-96 mx-auto'>
@@ -21,7 +28,7 @@ export default function Page() {
         {Object.entries(info).map(([key, value]) => (
           <tr key={key} className='border'>
             <td>{key}</td>
-            <td>{value?.toString()}</td>
+            <td>{value}</td>
           </tr>
         ))}
       </tbody>

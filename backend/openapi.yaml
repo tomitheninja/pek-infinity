@@ -22,6 +22,45 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Ping"
+  /api/v4/auth/login:
+    get:
+      operationId: AuthController_login
+      parameters: []
+      responses:
+        "200":
+          description: ""
+        "302":
+          description: Redirects to the AuthSch login page.
+  /api/v4/auth/callback:
+    get:
+      operationId: AuthController_oauthRedirect
+      parameters:
+        - name: code
+          required: true
+          in: query
+          schema: {}
+      responses:
+        "200":
+          description: ""
+        "302":
+          description: Redirects to the frontend with the JWT in the query string.
+  /api/v4/auth/me:
+    get:
+      operationId: AuthController_me
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
 info:
   title: PÉK API
   description: Profiles and Groups
@@ -41,6 +80,13 @@ components:
           type: string
       required:
         - ping
+    UserDto:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
 externalDocs:
   description: Source Code (GitHub)
   url: https://github.com/kir-dev/pek-infinity

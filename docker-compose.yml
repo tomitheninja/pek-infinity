@@ -1,0 +1,30 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - '3300:3300'
+    env_file:
+      - .env
+    links:
+      - postgres
+
+  postgres:
+    image: postgres:13-alpine
+    volumes:
+      - pek-postgres:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+volumes:
+  pek-postgres:

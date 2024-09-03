@@ -5,13 +5,13 @@
     "frontend"
   ],
   "scripts": {
-    "dev": "concurrently \"yarn workspace backend run build:watch\" \"yarn workspace frontend run dev\" \"yarn run watch:openapi\"",
+    "dev": "concurrently --names \"backend,frontend,openapi\" -c \"bgBlue.bold,bgGreen.bold,bgYellow.bold\" \"yarn workspace backend run start:dev\" \"yarn workspace frontend run dev\" \"yarn run watch:openapi\"",
     "build": "yarn workspace backend run build && yarn workspace frontend run build",
     "lint": "yarn workspace backend run lint && yarn workspace frontend run lint",
     "lint:fix": "yarn workspace backend run lint:fix && yarn workspace frontend run lint:fix",
     "format:fix": "npx prettier -c --write .",
     "generate": "npx @openapitools/openapi-generator-cli generate -i ./backend/openapi.yaml -g typescript-axios -o ./pek-client",
-    "watch:openapi": "nodemon --watch backend/openapi.yaml --exec \"yarn generate\""
+    "watch:openapi": "nodemon --on-change-only --watch backend/openapi.yaml --exec \"yarn generate\""
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.4",

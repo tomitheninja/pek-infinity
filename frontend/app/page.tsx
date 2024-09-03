@@ -1,11 +1,13 @@
-import { Navbar } from '@/components/navbar';
-import { PekApi } from '@/pek-api';
+import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
+import { ClientSideProfile } from '@/components/client-side-profile';
+import { Navbar } from '@/components/navbar';
+import { ServerSideProfile } from '@/components/server-side-profile';
+import { ServerPekApi } from '@/network/server-api';
 
 export default async function Home() {
-  const api = new PekApi();
-  const ping = await api.ping();
+  const pek = await ServerPekApi.getDefault();
+  const ping = await pek.ping();
   return (
     <>
       <Navbar />
@@ -43,6 +45,9 @@ export default async function Home() {
             <p className='m-0 max-w-[30ch] text-sm opacity-50'>Egy random személy profilja</p>
           </a>
         </div>
+        <Link href='/login'>Login</Link>
+        <ServerSideProfile />
+        <ClientSideProfile />
       </main>
     </>
   );
