@@ -1,17 +1,13 @@
 'use client';
 
-import { createContext, useEffect } from 'react';
+import { axiosInstance } from '@kubb/swagger-client/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { ClientPekApi } from '@/network/client-api';
-
-export const ClientApiContext = createContext<ClientPekApi | null>(null);
+const queryClient = new QueryClient();
 
 export function Providers({ children, apiBasePath }: Readonly<{ children: React.ReactNode; apiBasePath: string }>) {
-  const apiInstance = new ClientPekApi(apiBasePath);
-  useEffect(() => {
-    if (typeof window !== 'undefined') (window as any).pekApi = apiInstance;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [apiBasePath]);
+  axiosInstance.defaults.baseURL = apiBasePath;
+  axiosInstance.defaults.withCredentials = true;
 
-  return <ClientApiContext.Provider value={apiInstance}>{children}</ClientApiContext.Provider>;
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

@@ -1,7 +1,6 @@
 'use client';
-import { useApi } from '@/hooks/use-api';
+import { axiosInstance } from '@kubb/swagger-client/client';
 
 export function PekClientDebug() {
-  const api = useApi();
-  return <>{JSON.stringify(api)}</>;
+  return <p>{axiosInstance.defaults.baseURL ?? ''}</p>;
 }
