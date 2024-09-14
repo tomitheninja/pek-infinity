@@ -8,7 +8,7 @@ const fallbackToPreviewFrontend =
 
 export const FRONTEND_CALLBACK =
   !process.env.FRONTEND_CALLBACK && fallbackToPreviewFrontend
-    ? process.env.VERCEL_BRANCH_URL!
+    ? `https://${process.env.VERCEL_BRANCH_URL!}`
     : env.get('FRONTEND_CALLBACK').required().asString();
 
 export const JWT_SECRET = env.get('JWT_SECRET').required().asString();
