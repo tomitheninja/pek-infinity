@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 
@@ -48,6 +48,7 @@ const GroupDtoSelect = {
 
 @Injectable()
 export class GroupService {
+  private readonly logger = new Logger(GroupService.name);
   constructor(private prisma: PrismaService) {}
 
   async create({
@@ -95,6 +96,7 @@ export class GroupService {
         select: GroupDtoSelect,
       });
     } catch (error) {
+      this.logger.error(error);
       throw new NotFoundException(`Group with ID ${id} not found`);
     }
   }
@@ -105,6 +107,7 @@ export class GroupService {
         where: { id },
       });
     } catch (error) {
+      this.logger.error(error);
       throw new NotFoundException(`Group with ID ${id} not found`);
     }
   }
