@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { Logger, VersioningType } from '@nestjs/common';
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { type NestExpressApplication } from '@nestjs/platform-express';
 import {
@@ -21,7 +21,7 @@ export async function bootstrap(): Promise<{
   document: OpenAPIObject;
 }> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app
     .setGlobalPrefix('api')
     .enableVersioning({ type: VersioningType.URI, defaultVersion: '4' })
