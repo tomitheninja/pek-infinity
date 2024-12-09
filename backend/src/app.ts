@@ -23,7 +23,7 @@ export async function bootstrap(): Promise<{
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app
-    .setGlobalPrefix('api')
+    .setGlobalPrefix('api', { exclude: ['/', '/ping'] })
     .enableVersioning({ type: VersioningType.URI, defaultVersion: '4' })
     .enableCors({
       origin: FRONTEND_CALLBACK,
@@ -39,11 +39,12 @@ export async function bootstrap(): Promise<{
       'Source Code (GitHub)',
       'https://github.com/kir-dev/pek-infinity',
     )
+    .addBearerAuth()
     .addCookieAuth('jwt')
     .build();
   const document = SwaggerModule.createDocument(app, config, {
     operationIdFactory: (controller, method, version) =>
-      `${capitalize(controller.replace('Controller', ''))}${capitalize(method)}${version === 'v4' ? '' : version}`,
+      `${capitalize(controller.replace('Controller', ''))}${capitalize(method)}${!version || version === 'v4' ? '' : version}`,
   });
   SwaggerModule.setup('api', app, document);
 
