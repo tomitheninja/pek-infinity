@@ -44,27 +44,51 @@ paths:
           description: ""
         "302":
           description: Redirects to the AuthSch login page.
-        "401": &a2
+        "401": &a5
           description: Unauthorized
+          example: &a2
+            response:
+              data:
+                statusCode: 401
+                error: Unauthorized
+                message: Human readable error
+            status: 401
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AxiosErrorDto"
-        "403": &a3
+              example: *a2
+        "403": &a6
           description: Forbidden
+          example: &a3
+            response:
+              data:
+                statusCode: 403
+                error: Forbidden
+                message: Human readable error
+            status: 403
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AxiosErrorDto"
-        "500": &a4
+              example: *a3
+        "500": &a7
           description: Internal Server Error
+          example: &a4
+            response:
+              data:
+                statusCode: 500
+                error: Internal Server Error
+                message: Human readable error
+            status: 500
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AxiosErrorDto"
-      tags: &a5
+              example: *a4
+      tags: &a8
         - auth
-      security: &a6
+      security: &a9
         - bearer: []
         - jwt: []
   /api/v4/auth/callback:
@@ -80,11 +104,11 @@ paths:
           description: ""
         "302":
           description: Redirects to the frontend and sets cookie with JWT.
-        "401": *a2
-        "403": *a3
-        "500": *a4
-      tags: *a5
-      security: *a6
+        "401": *a5
+        "403": *a6
+        "500": *a7
+      tags: *a8
+      security: *a9
   /api/v4/auth/logout:
     get:
       operationId: AuthLogout
@@ -94,11 +118,11 @@ paths:
           description: ""
         "302":
           description: Redirects to the frontend and clears the JWT cookie.
-        "401": *a2
-        "403": *a3
-        "500": *a4
-      tags: *a5
-      security: *a6
+        "401": *a5
+        "403": *a6
+        "500": *a7
+      tags: *a8
+      security: *a9
   /api/v4/auth/me:
     get:
       operationId: AuthMe
@@ -110,11 +134,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserDto"
-        "401": *a2
-        "403": *a3
-        "500": *a4
-      tags: *a5
-      security: *a6
+        "401": *a5
+        "403": *a6
+        "500": *a7
+      tags: *a8
+      security: *a9
   /api/v4/group:
     post:
       operationId: GroupCreate
@@ -132,27 +156,51 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupDto"
-        "401": &a7
+        "401": &a13
           description: Unauthorized
+          example: &a10
+            response:
+              data:
+                statusCode: 401
+                error: Unauthorized
+                message: Human readable error
+            status: 401
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AxiosErrorDto"
-        "403": &a8
+              example: *a10
+        "403": &a14
           description: Forbidden
+          example: &a11
+            response:
+              data:
+                statusCode: 403
+                error: Forbidden
+                message: Human readable error
+            status: 403
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AxiosErrorDto"
-        "500": &a9
+              example: *a11
+        "500": &a15
           description: Internal Server Error
+          example: &a12
+            response:
+              data:
+                statusCode: 500
+                error: Internal Server Error
+                message: Human readable error
+            status: 500
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AxiosErrorDto"
-      tags: &a10
+              example: *a12
+      tags: &a16
         - group
-      security: &a11
+      security: &a17
         - bearer: []
         - jwt: []
     get:
@@ -179,11 +227,11 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/GroupListItemDto"
-        "401": *a7
-        "403": *a8
-        "500": *a9
-      tags: *a10
-      security: *a11
+        "401": *a13
+        "403": *a14
+        "500": *a15
+      tags: *a16
+      security: *a17
   /api/v4/group/{id}:
     get:
       operationId: GroupFindOne
@@ -200,11 +248,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupDto"
-        "401": *a7
-        "403": *a8
-        "500": *a9
-      tags: *a10
-      security: *a11
+        "401": *a13
+        "403": *a14
+        "500": *a15
+      tags: *a16
+      security: *a17
     put:
       operationId: GroupUpdate
       parameters:
@@ -226,11 +274,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupDto"
-        "401": *a7
-        "403": *a8
-        "500": *a9
-      tags: *a10
-      security: *a11
+        "401": *a13
+        "403": *a14
+        "500": *a15
+      tags: *a16
+      security: *a17
     delete:
       operationId: GroupRemove
       parameters:
@@ -244,11 +292,11 @@ paths:
           description: ""
         "204":
           description: Delete group
-        "401": *a7
-        "403": *a8
-        "500": *a9
-      tags: *a10
-      security: *a11
+        "401": *a13
+        "403": *a14
+        "500": *a15
+      tags: *a16
+      security: *a17
 info:
   title: PÉK API
   description: Profiles and Groups
