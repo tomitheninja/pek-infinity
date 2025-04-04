@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_tomitheninja_pek_infinity_1743775603759-pr-trigger-input-set
+  identifier: Build_tomitheninja_pek_infinity_1743775603759prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: pekinfinity
+  pipeline:
+    identifier: Build_tomitheninja_pek_infinity_1743775603759
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
