@@ -10,149 +10,150 @@ pipeline:
         connectorRef: account.Github_OAuth_1743775567739
         repoName: tomitheninja/pek-infinity
   stages:
-    - stage:
-        name: security
-        identifier: security
-        description: ""
-        type: CI
-        spec:
-          cloneCodebase: true
-          caching:
-            enabled: true
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Cloud
-            spec: {}
-          execution:
-            steps:
-              - parallel:
+    - parallel:
+        - stage:
+            identifier: build1
+            name: lint
+            spec:
+              caching:
+                enabled: true
+                paths: []
+              cloneCodebase: true
+              execution:
+                steps:
                   - step:
-                      type: Owasp
-                      name: Owasp_1
-                      identifier: Owasp_1
-                      spec:
-                        target:
-                          detection: auto
-                          type: repository
-                        advanced:
-                          log:
-                            level: info
-                          args: {}
-                        mode: orchestration
-                        config: default
-                  - step:
-                      type: OsvScanner
-                      name: OsvScanner_1
-                      identifier: OsvScanner_1
-                      spec:
-                        target:
-                          detection: auto
-                          type: repository
-                        advanced:
-                          log:
-                            level: info
-                          args: {}
-                        mode: orchestration
-                        config: default
-                  - step:
-                      type: Gitleaks
-                      name: Gitleaks_1
-                      identifier: Gitleaks_1
-                      spec:
-                        target:
-                          detection: auto
-                          type: repository
-                        advanced:
-                          log:
-                            level: info
-                          args: {}
-                        mode: orchestration
-                        config: default
-    - stage:
-        identifier: build1
-        name: lint
-        spec:
-          caching:
-            enabled: true
-            paths: []
-          cloneCodebase: true
-          execution:
-            steps:
-              - step:
-                  type: Run
-                  name: install NodeJS
-                  identifier: install_NodeJS
-                  spec:
-                    shell: Sh
-                    command: |-
-                      mkdir $HOME/nodejs
-                      curl -L https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz | tar xJ -C $HOME/nodejs
-                      export PATH=$HOME/nodejs/node-v${NODE_VERSION}-linux-x64/bin:$PATH
-                    envVariables:
-                      NODE_VERSION: "20"
-              - step:
-                  identifier: installdependencies
-                  name: install dependencies
-                  spec:
-                    shell: Sh
-                    command: yarn install
-                  timeout: ""
-                  type: Run
-              - parallel:
-                  - step:
-                      identifier: lint
-                      name: check format backend
+                      type: Run
+                      name: install NodeJS
+                      identifier: install_NodeJS
                       spec:
                         shell: Bash
                         command: |-
-                          pushd backend
-                          yarn run format
-                          popd
+                          mkdir $HOME/nodejs
+                          curl -L https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz | tar xJ -C $HOME/nodejs
+                          export PATH=$HOME/nodejs/node-v${NODE_VERSION}-linux-x64/bin:$PATH
+                        envVariables:
+                          NODE_VERSION: "20"
+                  - step:
+                      identifier: installdependencies
+                      name: install dependencies
+                      spec:
+                        shell: Sh
+                        command: yarn install
                       timeout: ""
                       type: Run
-                  - step:
-                      type: Run
-                      name: check format frontend
-                      identifier: check_format_frontend
-                      spec:
-                        shell: Bash
-                        command: |-
-                          pushd frontend
-                          yarn run format
-                          popd
-              - parallel:
-                  - step:
-                      type: Run
-                      name: lint backend
-                      identifier: lint_backend
-                      spec:
-                        shell: Bash
-                        command: |-
-                          pushd backend
-                          yarn run lint
-                          popd
-                  - step:
-                      type: Run
-                      name: lint frontend
-                      identifier: lint_frontend
-                      spec:
-                        shell: Bash
-                        command: |-
-                          pushd frontend
-                          yarn run lint
-                          popd
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Cloud
-            spec: {}
-          buildIntelligence:
-            enabled: false
-        type: CI
-        description: ""
+                  - parallel:
+                      - step:
+                          identifier: lint
+                          name: check format backend
+                          spec:
+                            shell: Bash
+                            command: |-
+                              pushd backend
+                              yarn run format
+                              popd
+                          timeout: ""
+                          type: Run
+                      - step:
+                          type: Run
+                          name: check format frontend
+                          identifier: check_format_frontend
+                          spec:
+                            shell: Bash
+                            command: |-
+                              pushd frontend
+                              yarn run format
+                              popd
+                  - parallel:
+                      - step:
+                          type: Run
+                          name: lint backend
+                          identifier: lint_backend
+                          spec:
+                            shell: Bash
+                            command: |-
+                              pushd backend
+                              yarn run lint
+                              popd
+                      - step:
+                          type: Run
+                          name: lint frontend
+                          identifier: lint_frontend
+                          spec:
+                            shell: Bash
+                            command: |-
+                              pushd frontend
+                              yarn run lint
+                              popd
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              buildIntelligence:
+                enabled: false
+            type: CI
+            description: ""
+        - stage:
+            name: security
+            identifier: security
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: true
+              caching:
+                enabled: true
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - parallel:
+                      - step:
+                          type: Owasp
+                          name: Owasp_1
+                          identifier: Owasp_1
+                          spec:
+                            target:
+                              detection: auto
+                              type: repository
+                            advanced:
+                              log:
+                                level: info
+                              args: {}
+                            mode: orchestration
+                            config: default
+                      - step:
+                          type: OsvScanner
+                          name: OsvScanner_1
+                          identifier: OsvScanner_1
+                          spec:
+                            target:
+                              detection: auto
+                              type: repository
+                            advanced:
+                              log:
+                                level: info
+                              args: {}
+                            mode: orchestration
+                            config: default
+                      - step:
+                          type: Gitleaks
+                          name: Gitleaks_1
+                          identifier: Gitleaks_1
+                          spec:
+                            target:
+                              detection: auto
+                              type: repository
+                            advanced:
+                              log:
+                                level: info
+                              args: {}
+                            mode: orchestration
+                            config: default
     - parallel:
         - stage:
             name: build backend
