@@ -12,38 +12,141 @@ pipeline:
   stages:
     - stage:
         identifier: build1
-        name: build
+        name: lint
         spec:
           caching:
             enabled: true
+            paths: []
           cloneCodebase: true
           execution:
             steps:
               - step:
+                  type: Run
+                  name: install NodeJS
+                  identifier: install_NodeJS
+                  spec:
+                    shell: Sh
+                    command: |-
+                      mkdir $HOME/nodejs
+                      curl -L https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz | tar xJ -C $HOME/nodejs
+                      export PATH=$HOME/nodejs/node-v${NODE_VERSION}-linux-x64/bin:$PATH
+                    envVariables:
+                      NODE_VERSION: "20"
+              - step:
                   identifier: installdependencies
                   name: install dependencies
                   spec:
-                    command: npm install
+                    shell: Sh
+                    command: yarn install
                   timeout: ""
                   type: Run
-              - step:
-                  identifier: lint
-                  name: lint
-                  spec:
-                    command: npm run lint
-                  timeout: ""
-                  type: Run
-              - step:
-                  identifier: build
-                  name: build
-                  spec:
-                    command: npm run build
-                  timeout: ""
-                  type: Run
+              - parallel:
+                  - step:
+                      identifier: lint
+                      name: check format backend
+                      spec:
+                        shell: Bash
+                        command: |-
+                          pushd backend
+                          yarn run format
+                          popd
+                      timeout: ""
+                      type: Run
+                  - step:
+                      type: Run
+                      name: check format frontend
+                      identifier: check_format_frontend
+                      spec:
+                        shell: Bash
+                        command: |-
+                          pushd frontend
+                          yarn run format
+                          popd
+              - parallel:
+                  - step:
+                      type: Run
+                      name: lint backend
+                      identifier: lint_backend
+                      spec:
+                        shell: Bash
+                        command: |-
+                          pushd backend
+                          yarn run lint
+                          popd
+                  - step:
+                      type: Run
+                      name: lint frontend
+                      identifier: lint_frontend
+                      spec:
+                        shell: Bash
+                        command: |-
+                          pushd frontend
+                          yarn run lint
+                          popd
           platform:
-            arch: Amd64
             os: Linux
+            arch: Amd64
           runtime:
-            spec: {}
             type: Cloud
+            spec: {}
+          buildIntelligence:
+            enabled: false
         type: CI
+        description: ""
+    - parallel:
+        - stage:
+            name: build backend
+            identifier: build_backend
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: true
+              caching:
+                enabled: true
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: BuildAndPushDockerRegistry
+                      name: BuildAndPushDockerRegistry_backend
+                      identifier: BuildAndPushDockerRegistry_backend
+                      spec:
+                        connectorRef: account.harnessImage
+                        repo: tomitheninja/pek-infinity-backend
+                        tags:
+                          - latest
+                        caching: true
+                        dockerfile: Dockerfile.backend
+        - stage:
+            name: build frontend
+            identifier: build_frontend
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: true
+              caching:
+                enabled: true
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: BuildAndPushDockerRegistry
+                      name: BuildAndPushDockerRegistry_frontend
+                      identifier: BuildAndPushDockerRegistry_frontend
+                      spec:
+                        connectorRef: account.harnessImage
+                        repo: tomitheninja/pek-infinity-frontend
+                        tags:
+                          - latest
+                        caching: true
+                        dockerfile: Dockerfile.frontend
