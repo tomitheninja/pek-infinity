@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_tomitheninja_pek_infinity_1743776641843-push-trigger-input-set
+  identifier: Build_tomitheninja_pek_infinity_1743776641843pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: pekinfinity
+  pipeline:
+    identifier: Build_tomitheninja_pek_infinity_1743776641843
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
